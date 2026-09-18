@@ -54,7 +54,7 @@ class LGFX : public lgfx::LGFX_Device
 
 // タッチスクリーンの型にあったインスタンスを用意します。(必要なければ削除)
 //lgfx::Touch_CST816S          _touch_instance;
-  lgfx::Touch_FT5x06           _touch_instance; // FT5206, FT5306, FT5406, FT6206, FT6236, FT6336, FT6436
+// *  lgfx::Touch_FT5x06           _touch_instance; // FT5206, FT5306, FT5406, FT6206, FT6236, FT6336, FT6436
 //lgfx::Touch_GSL1680E_800x480 _touch_instance; // GSL_1680E, 1688E, 2681B, 2682B
 //lgfx::Touch_GSL1680F_800x480 _touch_instance;
 //lgfx::Touch_GSL1680F_480x272 _touch_instance;
@@ -62,7 +62,7 @@ class LGFX : public lgfx::LGFX_Device
 //lgfx::Touch_GT911            _touch_instance;
 //lgfx::Touch_STMPE610         _touch_instance;
 //lgfx::Touch_TT21xxx          _touch_instance; // TT21100
-//lgfx::Touch_XPT2046          _touch_instance;
+lgfx::Touch_XPT2046          _touch_instance;
 
 public:
 
@@ -74,7 +74,7 @@ public:
       auto cfg = _bus_instance.config();    // バス設定用の構造体を取得します。
 
 // SPIバスの設定
-      cfg.spi_host = VSPI_HOST;     // 使用するSPIを選択  ESP32-S2,C3 : SPI2_HOST or SPI3_HOST / ESP32 : VSPI_HOST or HSPI_HOST
+      cfg.spi_host = SPI2_HOST;     // 使用するSPIを選択  ESP32-S2,C3 : SPI2_HOST or SPI3_HOST / ESP32 : VSPI_HOST or HSPI_HOST
       // ※ ESP-IDFバージョンアップに伴い、VSPI_HOST , HSPI_HOSTの記述は非推奨になるため、エラーが出る場合は代わりにSPI2_HOST , SPI3_HOSTを使用してください。
       cfg.spi_mode = 0;             // SPI通信モードを設定 (0 ~ 3)
       cfg.freq_write = 40000000;    // 送信時のSPIクロック (最大80MHz, 80MHzを整数で割った値に丸められます)
@@ -83,10 +83,10 @@ public:
       cfg.use_lock   = true;        // トランザクションロックを使用する場合はtrueを設定
       cfg.dma_channel = SPI_DMA_CH_AUTO; // 使用するDMAチャンネルを設定 (0=DMA不使用 / 1=1ch / 2=ch / SPI_DMA_CH_AUTO=自動設定)
       // ※ ESP-IDFバージョンアップに伴い、DMAチャンネルはSPI_DMA_CH_AUTO(自動設定)が推奨になりました。1ch,2chの指定は非推奨になります。
-      cfg.pin_sclk = 18;            // SPIのSCLKピン番号を設定
-      cfg.pin_mosi = 23;            // SPIのMOSIピン番号を設定
-      cfg.pin_miso = 19;            // SPIのMISOピン番号を設定 (-1 = disable)
-      cfg.pin_dc   = 27;            // SPIのD/Cピン番号を設定  (-1 = disable)
+      cfg.pin_sclk = 3;             // 18 SPIのSCLKピン番号を設定
+      cfg.pin_mosi = 45;            // 23 SPIのMOSIピン番号を設定
+      cfg.pin_miso = 46;            // 19 SPIのMISOピン番号を設定 (-1 = disable)
+      cfg.pin_dc   = 47;            // 27 SPIのD/Cピン番号を設定  (-1 = disable)
      // SDカードと共通のSPIバスを使う場合、MISOは省略せず必ず設定してください。
 //*/
 /*
@@ -122,9 +122,9 @@ public:
     { // 表示パネル制御の設定を行います。
       auto cfg = _panel_instance.config();    // 表示パネル設定用の構造体を取得します。
 
-      cfg.pin_cs           =    14;  // CSが接続されているピン番号   (-1 = disable)
-      cfg.pin_rst          =    33;  // RSTが接続されているピン番号  (-1 = disable)
-      cfg.pin_busy         =    -1;  // BUSYが接続されているピン番号 (-1 = disable)
+      cfg.pin_cs           =    14;  // 14 CSが接続されているピン番号   (-1 = disable)
+      cfg.pin_rst          =    21;  // 33 RSTが接続されているピン番号  (-1 = disable)
+      cfg.pin_busy         =    -1;  // -1 BUSYが接続されているピン番号 (-1 = disable)
 
       // ※ 以下の設定値はパネル毎に一般的な初期値が設定されていますので、不明な項目はコメントアウトして試してみてください。
 
